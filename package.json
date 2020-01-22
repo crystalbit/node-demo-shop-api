@@ -4,10 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index"
-  },
-  "engines": {
-    "node": "10.12.0"
+    "start": "node index",
+    "test": "mocha test/**/*.js --recursive"
   },
   "repository": {
     "type": "git",
@@ -24,5 +22,10 @@
     "express": "^4.17.1",
     "mysql2": "^2.1.0",
     "sequelize": "^5.21.3"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^7.0.0",
+    "uuid": "^3.4.0"
   }
 }

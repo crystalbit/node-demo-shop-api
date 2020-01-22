@@ -24,12 +24,12 @@ class Products extends Model {};
 Products.init({
     id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
     name: { type: Sequelize.STRING(1000), allowNull: false },
-    code: { type: Sequelize.STRING(100), allowNull: false },
+    code: { type: Sequelize.STRING(100), allowNull: false, unique: true },
     enabled: { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: true },
     description: { type: Sequelize.STRING(5000), allowNull: true },
     price: { type: Sequelize.DECIMAL(9,2), allowNull: false },
-    images: { type: Sequelize.TEXT('long'), allowNull: true }, // JSON
-    stock: { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: true }
+    images: { type: Sequelize.JSON, allowNull: true }, // JSON
+    stock: { type: Sequelize.INTEGER.UNSIGNED, allowNull: false, defaultValue: true }
 }, {
     sequelize,
     modelName: tables.products

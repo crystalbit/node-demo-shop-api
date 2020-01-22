@@ -1,6 +1,5 @@
 const models = require("./db-models");
 
-// TODO удалить потом невостребованные функции
 module.exports = {
     init: async function () {
         await models.init();
