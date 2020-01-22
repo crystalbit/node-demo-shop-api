@@ -1,5 +1,5 @@
-const Sequelize = require("sequelize");
-const { mysql } = require("../config");
+const Sequelize = require('sequelize');
+const { mysql } = require('../config');
 
 let sequelize = null;
 
@@ -7,7 +7,7 @@ const sequelizeInit = () => {
     sequelize = new Sequelize(mysql.database, mysql.user, mysql.password, {
         host: mysql.host,
         port: mysql.port || 3306,
-        dialect: "mysql",
+        dialect: 'mysql',
         pool: {
             max: 10,
             min: 0,
@@ -20,8 +20,8 @@ const sequelizeInit = () => {
 sequelizeInit();
 
 const tables = {
-    products: mysql.prefix + "products",
-    cities: mysql.prefix + "cities",
+    products: mysql.prefix + 'products',
+    cities: mysql.prefix + 'cities',
 };
 
 var Model = Sequelize.Model;
@@ -41,9 +41,13 @@ Products.init({
     modelName: tables.products
 });
 
-// города спарсю регуляркой отсюда: https://www.homeenglish.ru/Othercityrussia.htm
-// /<td>([а-яА-Я]*?)<\/td>\n\s*<td>([a-zA-Z]*?)<\/td>/gm
-// дамп по запросу могу дать, на демо-сервере оно будет уже в бд
+/**
+ * cities parsed from www.homeenglish.ru/Othercityrussia.htm
+ * regex for it is /<td>([а-яА-Я]*?)<\/td>\n\s*<td>([a-zA-Z]*?)<\/td>/gm
+ * to autofill not missing cities run test test/db-cities.js (mocha)
+ * 
+ * автозаполнение недостающих с помощью теста test/db-cities.js (mpcha)
+ */
 class Cities extends Model {};
 Cities.init({
     id: { type: Sequelize.INTEGER.UNSIGNED, primaryKey: true, autoIncrement: true },

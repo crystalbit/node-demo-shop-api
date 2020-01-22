@@ -33,5 +33,4 @@ module.exports = {
         const city = new models.cities(options);
         return city.save();
     },
-
 }
