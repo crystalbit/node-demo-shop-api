@@ -1,5 +1,12 @@
 const express = require('express');
 const app = express();
+const morgan = require('morgan');
+const bodyParser = require("body-parser");
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(morgan(":date :method :url :status :res[content-length] - :response-time ms"));
 
 const db = require('./modules/db/main');
 const Product = require('./modules/db/product');
