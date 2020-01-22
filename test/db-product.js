@@ -20,6 +20,10 @@ const product = {
 describe("Тест продукта", function() {
     var id = null;
 
+    before(async function() {
+        await db.init();
+    });
+
     it(`создаём продукт "${product.name}"`, async function() {
         const created = await db.addProduct(product);
         const values = created.dataValues;

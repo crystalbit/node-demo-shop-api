@@ -4,7 +4,7 @@ const app = express();
 const db = require('./modules/db');
 db.init();
 
-const PORT = process.env.PORT || 80;
+const PORT = process.env.PORT || 3333;
 
 // TODO вынести в роутер
 // TODO пагинация
