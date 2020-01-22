@@ -22,6 +22,9 @@ sequelizeInit();
 const tables = {
     products: mysql.prefix + 'products',
     cities: mysql.prefix + 'cities',
+    orders: mysql.prefix + 'orders',
+    orders_products: mysql.prefix + 'orders_products',
+    clients: mysql.prefix + 'clients'
 };
 
 var Model = Sequelize.Model;
@@ -58,9 +61,59 @@ Cities.init({
     modelName: tables.cities
 });
 
+/**
+ * addressTemplate to be used both in Orders and Clients
+ */
+const addressTemplate = {
+    full_name: { type: Sequelize.STRING(300), allowNull: false },
+    city_id: { type: Sequelize.INTEGER.UNSIGNED, allowNull: false },
+    street_address_1: { type: Sequelize.STRING(300), allowNull: false },
+    street_address_2: { type: Sequelize.STRING(300), allowNull: true },
+    zip: { type: Sequelize.INTEGER.UNSIGNED, allowNull: true }, // shall we know zip to order pizza? ;)
+    phone: { type: Sequelize.STRING(100), allowNull: false },
+    email: { type: Sequelize.STRING(200), allowNull: true },
+};
+
+class Orders extends Model {};
+Orders.init({
+    id: { type: Sequelize.INTEGER.UNSIGNED, primaryKey: true, autoIncrement: true },
+    client_id: { type: Sequelize.INTEGER.UNSIGNED, allowNull: true }, // can be null - client not reg-ed
+    ...addressTemplate,
+    delivery_cost: { type: Sequelize.DECIMAL(9,2), allowNull: false },
+    fixed_EUR_USD_rate: { type: Sequelize.DECIMAL(6,4), allowNull: false },
+}, {
+    sequelize,
+    modelName: tables.orders
+});
+
+class OrdersProducts extends Model {};
+OrdersProducts.init({
+    id: { type: Sequelize.INTEGER.UNSIGNED, primaryKey: true, autoIncrement: true },
+    order_id: { type: Sequelize.INTEGER.UNSIGNED, allowNull: false },
+    product_id: { type: Sequelize.INTEGER.UNSIGNED, allowNull: false },
+    quantity: { type: Sequelize.INTEGER.UNSIGNED, allowNull: false }
+}, {
+    sequelize,
+    modelName: tables.orders_products
+});
+
+class Clients extends Model {};
+Clients.init({
+    id: { type: Sequelize.INTEGER.UNSIGNED, primaryKey: true, autoIncrement: true },
+    login: { type: Sequelize.STRING(30), allowNull: false, unique: true },
+    password_hash: { type: Sequelize.STRING, allowNull: false, unique: true },
+    ...addressTemplate
+}, {
+    sequelize,
+    modelName: tables.clients
+});
+
 module.exports = {
     products: Products,
     cities: Cities,
+    orders: Orders,
+    orders_products: OrdersProducts,
+    clients: Clients,
     init: async function () {
         if (!sequelize) sequelizeInit();
         await sequelize.authenticate();
@@ -70,6 +123,9 @@ module.exports = {
         return [
             Products.sync({ alter: true }),
             Cities.sync({ alter: true }),
+            Orders.sync({ alter: true }),
+            OrdersProducts.sync({ alter: true }),
+            Clients.sync({ alter: true }),
         ];
     },
     close: async function () {
