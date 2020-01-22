@@ -2,7 +2,7 @@ const expect = require("chai").expect;
 const fs = require('fs');
 const path = require('path');
 const db = require('../modules/db/main');
-const City = require('../modules/db/city');
+const Cities = require('../modules/db/cities');
 
 // go tests
 describe("Тест получения городов / Retrieving cities from db", function() {
@@ -15,7 +15,7 @@ describe("Тест получения городов / Retrieving cities from db
     });
 
     it(`проверяем наличие городов в базе / loading and checking cities in db`, async function() {
-        const cities = await City.select();
+        const cities = await Cities.select();
         expect(typeof cities).to.be.equal('object');
         expect(cities.length).to.be.at.least(1);
     });

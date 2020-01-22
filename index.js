@@ -9,7 +9,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(morgan(":date :method :url :status :res[content-length] - :response-time ms"));
 
 const db = require('./modules/db/main');
-const Product = require('./modules/db/product');
+const Products = require('./modules/db/products');
 db.init();
 
 const PORT = process.env.PORT || 3333;
@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 3333;
 // TODO вынести в роутер
 // TODO пагинация
 app.get('/api-products', async (req, res) => {
-    const goods = await Product.select();
+    const goods = await Products.select();
     res.json(goods);
 });
 
