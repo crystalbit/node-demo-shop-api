@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const { mysql } = require('../config');
+const { mysql } = require('../../config');
 
 let sequelize = null;
 

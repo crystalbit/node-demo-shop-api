@@ -9,11 +9,11 @@
  */
 
 const cities = require('./cities.json');
-const db = require('../modules/db');
+const City = require('../modules/db/city');
 
 module.exports = {
   process: async (silent = false) => {
-    const existingCities = await db.selectCities();
+    const existingCities = await City.select();
     const existingCityNames = existingCities.map(it => it.name);
   
     for (let i = 0; i < cities.length; i++) {
@@ -23,7 +23,7 @@ module.exports = {
       if (existingCityNames.includes(name)) {
         if (!silent) console.log(`${name} exists`);
       } else {
-        await db.addCity({ name, name_local });
+        await City.add({ name, name_local });
         if (!silent) console.log(`${name} added!`);
       }
     }

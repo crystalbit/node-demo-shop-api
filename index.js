@@ -1,15 +1,16 @@
 const express = require('express');
 const app = express();
 
-const db = require('./modules/db');
+const db = require('./modules/db/main');
+const Product = require('./modules/db/product');
 db.init();
 
 const PORT = process.env.PORT || 3333;
 
 // TODO вынести в роутер
 // TODO пагинация
-app.get('/api-goods', async (req, res) => {
-    const goods = await db.selectProducts();
+app.get('/api-products', async (req, res) => {
+    const goods = await Product.select();
     res.json(goods);
 });
 
