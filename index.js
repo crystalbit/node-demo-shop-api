@@ -24,3 +24,5 @@ app.get('/api-products', async (req, res) => {
 app.listen(PORT, '127.0.0.1', () => {
     console.log(`API started at port ${PORT}`);
 });
+
+module.exports = app;
