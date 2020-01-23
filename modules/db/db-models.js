@@ -1,7 +1,9 @@
 const Sequelize = require('sequelize');
-const { mysql } = require('../../config');
+const { prod, dev, test } = require('../../config');
 
 let sequelize = null;
+
+const mysql = prod.mysql;
 
 const sequelizeInit = () => {
     sequelize = new Sequelize(mysql.database, mysql.user, mysql.password, {
@@ -33,7 +35,7 @@ class Products extends Model {};
 Products.init({
     id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
     name: { type: Sequelize.STRING(1000), allowNull: false },
-    code: { type: Sequelize.STRING(100), allowNull: false, unique: true },
+    code: { type: Sequelize.STRING(100), allowNull: false },
     enabled: { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: true },
     description: { type: Sequelize.STRING(5000), allowNull: true },
     price: { type: Sequelize.DECIMAL(9,2), allowNull: false },
@@ -41,7 +43,13 @@ Products.init({
     stock: { type: Sequelize.INTEGER.UNSIGNED, allowNull: false, defaultValue: true }
 }, {
     sequelize,
-    modelName: tables.products
+    modelName: tables.products,
+    indexes: [
+        {
+          unique: 'code',
+          fields: ['code']
+        }
+    ]
 });
 
 /**
@@ -100,12 +108,18 @@ OrdersProducts.init({
 class Clients extends Model {};
 Clients.init({
     id: { type: Sequelize.INTEGER.UNSIGNED, primaryKey: true, autoIncrement: true },
-    login: { type: Sequelize.STRING(30), allowNull: false, unique: true },
-    password_hash: { type: Sequelize.STRING, allowNull: false, unique: true },
+    login: { type: Sequelize.STRING(30), allowNull: false },
+    password_hash: { type: Sequelize.STRING, allowNull: false },
     ...addressTemplate
 }, {
     sequelize,
-    modelName: tables.clients
+    modelName: tables.clients,
+    indexes: [
+        {
+            unique: 'login',
+            fields: ['login']
+        }
+    ]
 });
 
 module.exports = {
