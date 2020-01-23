@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 3333;
 
 // TODO вынести в роутер
 // TODO пагинация
-app.get('/api-goods', async (req, res) => {
+app.get('/api-products', async (req, res) => {
     const goods = await db.selectProducts();
     res.json(goods);
 });
@@ -23,3 +23,5 @@ app.get('/api-goods', async (req, res) => {
 app.listen(PORT, '127.0.0.1', () => {
     console.log(`API started at port ${PORT}`);
 });
+
+module.exports = app;
