@@ -12,9 +12,8 @@ const product = {
     code: uuidv4(),
     enabled: Math.random() > 0.3,
     description: uuidv4() + ' ' + uuidv4() + '\n' + uuidv4(),
-    price: (500 + Math.ceil(500 * Math.random())).toFixed(2),
+    price: (8 + Math.ceil(10 * Math.random())).toFixed(2),
     images: [],
-    stock: 500 + Math.ceil(500 * Math.random())
 };
 
 // go tests
