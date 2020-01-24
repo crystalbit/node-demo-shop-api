@@ -35,6 +35,7 @@ class Products extends Model {};
 Products.init({
     id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
     name: { type: Sequelize.STRING(1000), allowNull: false },
+    subheader: { type: Sequelize.STRING(200), allowNull: true },
     code: { type: Sequelize.STRING(100), allowNull: false },
     enabled: { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: true },
     description: { type: Sequelize.STRING(5000), allowNull: true },
