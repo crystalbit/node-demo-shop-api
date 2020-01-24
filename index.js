@@ -12,7 +12,7 @@ app.use(morgan(":date :method :url :status :res[content-length] - :response-time
 
 const PORT = process.env.PORT || 3333;
 
-app.use('/products', productRoutes);
+app.use('/api/products', productRoutes);
 
 app.listen(PORT, '127.0.0.1', () => {
     console.log(`API started at port ${PORT}`);
