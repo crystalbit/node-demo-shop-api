@@ -39,7 +39,7 @@ Products.init({
     enabled: { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: true },
     description: { type: Sequelize.STRING(5000), allowNull: true },
     price: { type: Sequelize.DECIMAL(9,2), allowNull: false },
-    images: { type: Sequelize.JSON, allowNull: true }, // JSON
+    image: { type: Sequelize.STRING(100), allowNull: true }, // JSON
 }, {
     sequelize,
     modelName: tables.products,
