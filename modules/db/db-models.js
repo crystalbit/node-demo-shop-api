@@ -40,7 +40,6 @@ Products.init({
     description: { type: Sequelize.STRING(5000), allowNull: true },
     price: { type: Sequelize.DECIMAL(9,2), allowNull: false },
     images: { type: Sequelize.JSON, allowNull: true }, // JSON
-    stock: { type: Sequelize.INTEGER.UNSIGNED, allowNull: false, defaultValue: true }
 }, {
     sequelize,
     modelName: tables.products,
