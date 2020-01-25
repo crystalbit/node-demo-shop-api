@@ -13,7 +13,7 @@ const product = {
     enabled: Math.random() > 0.3,
     description: uuidv4() + ' ' + uuidv4() + '\n' + uuidv4(),
     price: (8 + Math.ceil(10 * Math.random())).toFixed(2),
-    images: [],
+    image: 'image.jpg',
 };
 
 // go tests
@@ -34,8 +34,7 @@ describe("Тест продукта", function() {
         expect(values.enabled).to.be.equal(product.enabled);
         expect(values.description).to.be.equal(product.description);
         expect(values.price).to.be.eql(product.price);
-        expect(values.images).to.be.equal(product.images);
-        expect(values.stock).to.be.equal(product.stock);
+        expect(values.image).to.be.equal(product.image);
         id = values.id;
     });
     it("обновляем этот продукт", async function() {
@@ -48,8 +47,7 @@ describe("Тест продукта", function() {
         expect(values.enabled).to.be.equal(product.enabled);
         expect(values.description).to.be.equal(newDescription); // изменённое
         expect(values.price).to.be.equal(product.price);
-        expect(values.images).to.be.eql(product.images);
-        expect(values.stock).to.be.equal(product.stock);
+        expect(values.image).to.be.eql(product.image);
     });
     it("находим этот продукт", async function() {
         const finder = await Products.select({ where: { id }});
@@ -60,8 +58,7 @@ describe("Тест продукта", function() {
         expect(values.code).to.be.equal(product.code);
         expect(values.enabled).to.be.equal(product.enabled);
         expect(values.price).to.be.equal(product.price);
-        expect(values.images).to.be.eql(product.images);
-        expect(values.stock).to.be.equal(product.stock);
+        expect(values.image).to.be.eql(product.image);
     });
     it("удаляем продукт", async function() {
         let result = await Products.delete(id);
@@ -72,8 +69,7 @@ describe("Тест продукта", function() {
         expect(values.code).to.be.equal(product.code);
         expect(values.enabled).to.be.equal(product.enabled);
         expect(values.price).to.be.equal(product.price);
-        expect(values.images).to.be.eql(product.images);
-        expect(values.stock).to.be.equal(product.stock);
+        expect(values.image).to.be.eql(product.image);
     });
     it("продукт удалён, и его уже не найти", async function() {
         const finder = await Products.select({ where: { id }});
