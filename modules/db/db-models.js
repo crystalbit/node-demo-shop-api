@@ -23,7 +23,6 @@ sequelizeInit();
 
 const tables = {
     products: mysql.prefix + 'products',
-    cities: mysql.prefix + 'cities',
     orders: mysql.prefix + 'orders',
     orders_products: mysql.prefix + 'orders_products',
     clients: mysql.prefix + 'clients'
@@ -35,6 +34,7 @@ class Products extends Model {};
 Products.init({
     id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
     name: { type: Sequelize.STRING(1000), allowNull: false },
+    subheader: { type: Sequelize.STRING(200), allowNull: true },
     code: { type: Sequelize.STRING(100), allowNull: false },
     enabled: { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: true },
     description: { type: Sequelize.STRING(5000), allowNull: true },
@@ -52,31 +52,11 @@ Products.init({
 });
 
 /**
- * cities parsed from www.homeenglish.ru/Othercityrussia.htm
- * regex for it is /<td>([а-яА-Я]*?)<\/td>\n\s*<td>([a-zA-Z]*?)<\/td>/gm
- * to autofill not missing cities run test test/db-cities.js (mocha)
- * 
- * автозаполнение недостающих с помощью теста test/db-cities.js (mpcha)
- */
-class Cities extends Model {};
-Cities.init({
-    id: { type: Sequelize.INTEGER.UNSIGNED, primaryKey: true, autoIncrement: true },
-    name: { type: Sequelize.STRING(100), allowNull: false },
-    name_local: { type: Sequelize.STRING(100), allowNull: false }
-}, {
-    sequelize,
-    modelName: tables.cities
-});
-
-/**
  * addressTemplate to be used both in Orders and Clients
  */
 const addressTemplate = {
-    full_name: { type: Sequelize.STRING(300), allowNull: false },
-    city_id: { type: Sequelize.INTEGER.UNSIGNED, allowNull: false },
-    street_address_1: { type: Sequelize.STRING(300), allowNull: false },
-    street_address_2: { type: Sequelize.STRING(300), allowNull: true },
-    zip: { type: Sequelize.INTEGER.UNSIGNED, allowNull: true }, // shall we know zip to order pizza? ;)
+    name: { type: Sequelize.STRING(300), allowNull: false },
+    address: { type: Sequelize.STRING(300), allowNull: false },
     phone: { type: Sequelize.STRING(100), allowNull: false },
     email: { type: Sequelize.STRING(200), allowNull: true },
 };
@@ -123,7 +103,6 @@ Clients.init({
 
 module.exports = {
     products: Products,
-    cities: Cities,
     orders: Orders,
     orders_products: OrdersProducts,
     clients: Clients,
@@ -135,7 +114,6 @@ module.exports = {
     sync: async function () {
         return [
             Products.sync({ alter: true }),
-            Cities.sync({ alter: true }),
             Orders.sync({ alter: true }),
             OrdersProducts.sync({ alter: true }),
             Clients.sync({ alter: true }),

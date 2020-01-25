@@ -13,7 +13,7 @@ chai.use(chaiHttp);
 describe("Тест загрузки страниц / Loading pages", function() {
     it(`загружаем продукты / loading products`, function(done) {
         chai.request(app)
-            .get('/api-products')
+            .get('/api/products/list')
             .end((err, res) => {
                 res.should.have.status(200);
                 res.body.should.be.a('array');
