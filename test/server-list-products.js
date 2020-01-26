@@ -5,12 +5,7 @@ chai.should();
 
 chai.use(chaiHttp);
 
-/**
- * testing testing test
- * тестовый тест
- * TODO modify while creating routes
- */
-describe("Тест загрузки страниц / Loading pages", function() {
+describe("Тест получения списка продуктов / Loading products api test", function() {
     it(`загружаем продукты / loading products`, function(done) {
         chai.request(app)
             .get('/api/products/list')
