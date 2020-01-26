@@ -5,6 +5,9 @@ let sequelize = null;
 
 const mysql = prod.mysql;
 
+/**
+ * @returns {Promise} result of sequelize.authenticate()
+ */
 const sequelizeInit = () => {
     sequelize = new Sequelize(mysql.database, mysql.user, mysql.password, {
         host: mysql.host,
@@ -18,6 +21,7 @@ const sequelizeInit = () => {
         },
         logging: false
     });
+    return sequelize.authenticate();
 }
 sequelizeInit();
 
@@ -108,8 +112,6 @@ module.exports = {
     clients: Clients,
     init: async function () {
         if (!sequelize) sequelizeInit();
-        await sequelize.authenticate();
-        console.log('Connection has been established successfully.');
     },
     sync: async function () {
         return [
