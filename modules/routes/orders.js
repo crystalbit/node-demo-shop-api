@@ -9,7 +9,7 @@ const OrdersProducts = require('../db/orders_products');
 router.post('/push', async (req, res) => {
     const body = req.body;
     console.log(body);
-    res.json(body);
+    res.json({ success: true });
 });
 
 module.exports = router;
