@@ -1,13 +1,17 @@
+const production = process.env.NODE_ENV === 'production';
 const express = require('express');
 const app = express();
 const morgan = require('morgan');
+const cors = require('cors');
 const bodyParser = require("body-parser");
 
 const productsRoutes = require('./modules/routes/products');
 const ordersRoutes = require('./modules/routes/orders');
 
 app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: false }));
+
+// enable cross-domain requests for dev env
+if (!production) app.use(cors());
 
 app.use(morgan(":date :method :url :status :res[content-length] - :response-time ms"));
 
