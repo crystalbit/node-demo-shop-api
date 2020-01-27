@@ -15,7 +15,7 @@ if (!production) app.use(cors()); // enable cross-domain requests for dev env
 // auth
 const passport = require('passport');
 const { salt: secret } = require('./modules/helpers/hashing');
-app.use(session({ secret, resave: true, saveUninitialized: true }));
+app.use(session({ secret: secret(), resave: true, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 require('./modules/auth/strategy')(passport);
