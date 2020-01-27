@@ -1,5 +1,7 @@
 // env
-const production = process.env.NODE_ENV === 'production';
+const PRODUCTION = process.env.NODE_ENV === 'production';
+const TEST = process.env.NODE_ENV === 'test';
+const DEVELOPMENT = !PRODUCTION && !TEST;
 
 // express settings
 const express = require('express');
@@ -9,8 +11,8 @@ const bodyParser = require("body-parser");
 const morgan = require('morgan');
 const cors = require('cors');
 app.use(bodyParser.json());
-if (!production) app.use(morgan(":date :method :url :status :res[content-length] - :response-time ms"));
-if (!production) app.use(cors()); // enable cross-domain requests for dev env
+if (DEVELOPMENT) app.use(morgan(":date :method :url :status :res[content-length] - :response-time ms"));
+if (!PRODUCTION) app.use(cors()); // enable cross-domain requests for dev env
 
 // auth
 const passport = require('passport');

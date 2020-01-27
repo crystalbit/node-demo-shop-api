@@ -5,6 +5,7 @@ chai.should();
 const models = require('../modules/db/db-models');
 
 chai.use(chaiHttp);
+process.env.NODE_ENV = 'test';
 
 const client = {
     email: '111@mail.ru',
