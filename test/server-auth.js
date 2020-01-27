@@ -7,22 +7,20 @@ const models = require('../modules/db/db-models');
 chai.use(chaiHttp);
 
 const client = {
-    email: 
-    //Math.ceil(Math.random() * 1000000) + 
-    '111@mail.ru',
-    password: '1234',
+    email: '111@mail.ru',
+    password: '123456',
     name: 'John',
     address: 'test test test',
-    phone: '+1 (911) 000-0000'
+    phone: '+7 (911) 000-0000'
 }
 
-/**
- * testing testing test
- * тестовый тест
- * TODO modify while creating routes
- */
 describe("Тест регистрации клиента / Client signup test", () => {
-    it(`регистрируем / signing up`, async () => {
+    after(async () => {
+        // delete demo user if it exists
+        await models.clients.destroy({ where: { email: client.email } });
+    });
+
+    it('регистрируем / signing up', async () => {
         // delete demo user if it exists
         await models.clients.destroy({ where: { email: client.email } });
 
@@ -33,6 +31,19 @@ describe("Тест регистрации клиента / Client signup test", 
         res.should.have.status(200);
         res.body.should.be.an('object');
         res.body.auth.should.be.true;
+        return;
+    });
+
+    it('повторная регистрация той же почты / signing up with existing email', async () => {
+        const res = await chai.request(app)
+            .post('/api/auth/register')
+            .send(client);
+
+        res.should.have.status(200);
+        res.body.should.be.an('object');
+        res.body.auth.should.be.false;
+        res.body.validator.should.be.an('object');
+        res.body.validator.email.should.be.equal('User with this email already exists');
         return;
     });
 
