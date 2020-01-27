@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index",
+    "start": "NODE_ENV=development node index",
     "production": "NODE_ENV=production node index",
     "test": "mocha test/**/*.js --recursive --exit"
   },
@@ -20,11 +20,15 @@
   },
   "homepage": "https://github.com/crystalbit/node-demo-shop-api#readme",
   "dependencies": {
+    "bcrypt": "^3.0.7",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "express-session": "^1.17.0",
     "morgan": "^1.9.1",
     "mysql2": "^2.1.0",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
     "sequelize": "^5.21.3"
   },
   "devDependencies": {

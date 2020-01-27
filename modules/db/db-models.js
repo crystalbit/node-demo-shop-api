@@ -62,7 +62,7 @@ const addressTemplate = {
     name: { type: Sequelize.STRING(300), allowNull: false },
     address: { type: Sequelize.STRING(300), allowNull: false },
     phone: { type: Sequelize.STRING(100), allowNull: false },
-    email: { type: Sequelize.STRING(200), allowNull: true },
+    email: { type: Sequelize.STRING(200), allowNull: false },
 };
 
 class Orders extends Model {};
@@ -91,8 +91,9 @@ OrdersProducts.init({
 class Clients extends Model {};
 Clients.init({
     id: { type: Sequelize.INTEGER.UNSIGNED, primaryKey: true, autoIncrement: true },
-    login: { type: Sequelize.STRING(30), allowNull: false },
+    // email is in addressTemplate
     password_hash: { type: Sequelize.STRING, allowNull: false },
+    password_salt: { type: Sequelize.STRING, allowNull: false },
     ...addressTemplate
 }, {
     sequelize,

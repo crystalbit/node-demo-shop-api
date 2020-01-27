@@ -1,18 +1,25 @@
-const bcrypt = require('bcrypt');
-const passport = require('passport');
+const { hash } = require('../helpers/hashing');
+const models = require('../db/db-models');
 
-module.exports = function(passport, user) {
-    const User = user;
+module.exports = function(passport) {
     const LocalStrategy = require('passport-local').Strategy;
-    passport.use('local-signup', new LocalStrategy(
+    passport.use(new LocalStrategy(
         {
             usernameField: 'email',
-            passwordField: 'password',
-            passReqToCallback: true // allows us to pass back the entire request to the callback
+            passwordField: 'password'
         },
-        function(req, email, password, done) {
-            const generateHash = password => bcrypt.hashSync(password, bCrypt.genSaltSync(8), null);
-            
+        async (email, password, done) => {
+            const INCORRECT = 'Incorrect email or password';
+            const finder = await models.clients.findOne({ where: { email } });
+
+            if (!finder) {
+                return done(null, false, { message: INCORRECT });
+            }
+            if (finder.password_hash === hash(password, finder.password_salt)) {
+                return done(null, finder);
+            } else {
+                return done(null, false, { message: INCORRECT });
+            }
         }
     ));
 }

@@ -1,27 +1,35 @@
+// env
 const production = process.env.NODE_ENV === 'production';
+
+// express settings
 const express = require('express');
 const app = express();
+const session = require('express-session');
+const bodyParser = require("body-parser");
 const morgan = require('morgan');
 const cors = require('cors');
-const bodyParser = require("body-parser");
-
-const productsRoutes = require('./modules/routes/products');
-const ordersRoutes = require('./modules/routes/orders');
-
 app.use(bodyParser.json());
+if (!production) app.use(morgan(":date :method :url :status :res[content-length] - :response-time ms"));
+if (!production) app.use(cors()); // enable cross-domain requests for dev env
 
-// enable cross-domain requests for dev env
-if (!production) app.use(cors());
+// auth
+const passport = require('passport');
+const { salt: secret } = require('./modules/helpers/hashing');
+app.use(session({ secret, resave: true, saveUninitialized: true }));
+app.use(passport.initialize());
+app.use(passport.session());
+require('./modules/auth/strategy')(passport);
+passport.serializeUser((user, done) => done(null, user));
+passport.deserializeUser((user, done) => done(null, user));
 
-app.use(morgan(":date :method :url :status :res[content-length] - :response-time ms"));
+// routes
+app.use('/api/products', require('./modules/routes/products'));
+app.use('/api/orders', require('./modules/routes/orders'));
+app.use('/api/auth', require('./modules/routes/auth'));
 
+// run server
 const PORT = process.env.PORT || 3333;
+app.listen(PORT, '127.0.0.1', () => { console.log(`API started at port ${PORT}`); });
 
-app.use('/api/products', productsRoutes);
-app.use('/api/orders', ordersRoutes);
-
-app.listen(PORT, '127.0.0.1', () => {
-    console.log(`API started at port ${PORT}`);
-});
-
+// export app only for chai-http tests
 module.exports = app;
