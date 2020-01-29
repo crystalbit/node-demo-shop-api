@@ -1,9 +1,7 @@
 const Sequelize = require('sequelize');
-const { prod, dev, test } = require('../../config');
+const { mysql } = require('../../config');
 
 let sequelize = null;
-
-const mysql = prod.mysql;
 
 /**
  * @returns {Promise} result of sequelize.authenticate()
