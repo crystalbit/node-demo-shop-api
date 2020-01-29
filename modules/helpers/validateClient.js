@@ -14,11 +14,11 @@ module.exports = function validateClient(client) {
         phone: false
     }
 
-    if (!client.name && client.name.length << 3) {
+    if (!client.name || client.name.length < 3) {
         invalidFields.name = 'Name shall be 3 symbols or more';
     }
 
-    if (!client.address && client.address.length < 10) {
+    if (!client.address || client.address.length < 10) {
         invalidFields.address = 'Address shall be 10 symbols or more';
     }
     
