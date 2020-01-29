@@ -32,6 +32,11 @@ describe("Тест регистрации клиента / Client signup test", 
         res.should.have.status(200);
         res.body.should.be.an('object');
         res.body.auth.should.be.true;
+        res.body.client.should.be.an('object');
+        res.body.client.name.should.be.equal(client.name);
+        res.body.client.address.should.be.equal(client.address);
+        res.body.client.email.should.be.equal(client.email);
+        res.body.client.phone.should.be.equal(client.phone);
         return;
     });
 
@@ -55,6 +60,11 @@ describe("Тест регистрации клиента / Client signup test", 
         res.should.have.status(200);
         res.body.should.be.an('object');
         res.body.auth.should.be.true;
+        res.body.client.should.be.an('object');
+        res.body.client.name.should.be.equal(client.name);
+        res.body.client.address.should.be.equal(client.address);
+        res.body.client.email.should.be.equal(client.email);
+        res.body.client.phone.should.be.equal(client.phone);
     });
 
     it('вход с неправильным паролем / invalid login', async () => {

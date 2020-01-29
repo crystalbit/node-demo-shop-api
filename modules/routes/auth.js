@@ -53,7 +53,7 @@ router.post('/register', async (req, res, next) => {
         ...clientData
     });
     await client.save();
-    res.json({ auth: true });
+    res.json({ auth: true, client: clientData });
 });
 
 router.post('/login', function(req, res, next) {
@@ -63,7 +63,15 @@ router.post('/login', function(req, res, next) {
                 next(err);
             } else if (_user) {
                 req.logIn(_user, function(err) {
-                    return err ? next(err) : res.json({ auth: true });
+                    return err ? next(err) : res.json({
+                        auth: true,
+                        client: {
+                            address: _user.address,
+                            name: _user.name,
+                            phone: _user.phone,
+                            email: _user.email
+                        }
+                    });
                 });
             } else {
                 res.json({ auth: false });
