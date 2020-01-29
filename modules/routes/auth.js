@@ -53,25 +53,29 @@ router.post('/register', async (req, res, next) => {
         ...clientData
     });
     await client.save();
+    await new Promise(rs => req.logIn(client, rs));
     res.json({ auth: true, client: clientData });
 });
 
 router.get('/login', function(req, res) {
-    const auth = req.isAuthenticated();
-    res.json({
-        auth,
-        client: {
-            email: req.user.email,
-            address: req.user.address,
-            phone: req.user.phone,
-            name: req.user.name
-        }
-    });
+    if (req.isAuthenticated()) {
+        res.json({
+            auth: true,
+            client: {
+                email: req.user ? req.user.email : '',
+                address: req.user ? req.user.address : '',
+                phone: req.user ? req.user.phone : '',
+                name: req.user ? req.user.name : ''
+            }
+        });
+    } else {
+        res.json({ auth: false });
+    }
 });
 
 router.post('/login', function(req, res, next) {
     passport.authenticate('local',
-        function(err, _user, info) {
+        function(err, _user) {
             if (err) {
                 next(err);
             } else if (_user) {

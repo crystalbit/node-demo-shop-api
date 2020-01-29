@@ -83,7 +83,7 @@ describe("Тест валидации при регистрации клиент
         res.body.should.be.an('object');
         res.body.auth.should.be.false;
         res.body.validator.should.be.an('object');
-        res.body.validator.phone.should.be.equal('Please, provide a valid phone');
+        res.body.validator.phone.should.be.equal('Phone validation error');
         return;
     });
 
