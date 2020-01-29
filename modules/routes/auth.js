@@ -61,10 +61,10 @@ router.get('/login', function(req, res) {
     res.json({
         auth,
         client: {
-            email: client.email,
-            address: client.address,
-            phone: client.phone,
-            name: client.name
+            email: req.user.email,
+            address: req.user.address,
+            phone: req.user.phone,
+            name: req.user.name
         }
     });
 });
