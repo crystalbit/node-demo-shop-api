@@ -17,14 +17,14 @@ const product = {
 };
 
 // go tests
-describe("Тест продукта", function() {
+describe("Product test / Тест продукта", function() {
     var id = null;
 
     before(async function() {
         await db.init();
     });
 
-    it(`создаём продукт "${product.name}"`, async function() {
+    it(`create product / создаём продукт "${product.name}"`, async function() {
         const created = await Products.add(product);
         const values = created.dataValues;
         expect(typeof values).to.be.equal('object');
@@ -37,7 +37,7 @@ describe("Тест продукта", function() {
         expect(values.image).to.be.equal(product.image);
         id = values.id;
     });
-    it("обновляем этот продукт", async function() {
+    it("product update / обновляем этот продукт", async function() {
         const newDescription = uuidv4();
         const values = await Products.update(id, { description: newDescription });
         expect(typeof values).to.be.equal('object');
@@ -49,7 +49,7 @@ describe("Тест продукта", function() {
         expect(values.price).to.be.equal(product.price);
         expect(values.image).to.be.eql(product.image);
     });
-    it("находим этот продукт", async function() {
+    it("find the product / находим этот продукт", async function() {
         const finder = await Products.select({ where: { id }});
         const values = finder[0].dataValues;
         expect(typeof values).to.be.equal('object');
@@ -60,7 +60,7 @@ describe("Тест продукта", function() {
         expect(values.price).to.be.equal(product.price);
         expect(values.image).to.be.eql(product.image);
     });
-    it("удаляем продукт", async function() {
+    it("delete product / удаляем продукт", async function() {
         let result = await Products.delete(id);
         const values = result.dataValues;
         expect(typeof values).to.be.equal('object');
@@ -71,7 +71,7 @@ describe("Тест продукта", function() {
         expect(values.price).to.be.equal(product.price);
         expect(values.image).to.be.eql(product.image);
     });
-    it("продукт удалён, и его уже не найти", async function() {
+    it("be sure that we really deleted the product / продукт удалён, и его уже не найти", async function() {
         const finder = await Products.select({ where: { id }});
         expect(finder.length).to.be.equal(0);
     });

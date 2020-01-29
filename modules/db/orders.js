@@ -2,7 +2,6 @@ const models = require("./db-models");
 
 module.exports = {
     add: async function (options) {
-        console.log(options)
         const order = new models.orders(options);
         return order.save();
     },
