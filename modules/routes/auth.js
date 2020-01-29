@@ -56,6 +56,11 @@ router.post('/register', async (req, res, next) => {
     res.json({ auth: true, client: clientData });
 });
 
+router.get('/login', function(req, res) {
+    const auth = req.isAuthenticated();
+    res.json({ auth, user: req.user });
+});
+
 router.post('/login', function(req, res, next) {
     passport.authenticate('local',
         function(err, _user, info) {

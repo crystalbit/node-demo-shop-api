@@ -50,8 +50,16 @@ describe("Тест регистрации клиента / Client signup test", 
         res.body.auth.should.be.false;
         res.body.validator.should.be.an('object');
         res.body.validator.email.should.be.equal('User with this email already exists');
-        return;
     });
+
+    it('проверяем, аутентифицированы ли мы / check if we are autentificated', async () => {
+        const res = await chai.request(app)
+            .get('/api/auth/login')
+            .send();
+        res.should.have.status(200);
+        res.body.should.be.an('object');
+        res.body.auth.should.be.true;
+    })
 
     it('вход с правильным паролем / valid login', async () => {
         const res = await chai.request(app)
@@ -66,6 +74,17 @@ describe("Тест регистрации клиента / Client signup test", 
         res.body.client.email.should.be.equal(client.email);
         res.body.client.phone.should.be.equal(client.phone);
     });
+
+    it('проверяем, аутентифицированы ли мы / check if we are autentificated', async () => {
+        const res = await chai.request(app)
+            .get('/api/auth/login')
+            .send();
+        res.should.have.status(200);
+        res.body.should.be.an('object');
+        res.body.auth.should.be.true;
+    })
+
+
 
     it('вход с неправильным паролем / invalid login', async () => {
         const res = await chai.request(app)
