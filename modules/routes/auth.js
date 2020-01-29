@@ -58,7 +58,15 @@ router.post('/register', async (req, res, next) => {
 
 router.get('/login', function(req, res) {
     const auth = req.isAuthenticated();
-    res.json({ auth, user: req.user });
+    res.json({
+        auth,
+        client: {
+            email: client.email,
+            address: client.address,
+            phone: client.phone,
+            name: client.name
+        }
+    });
 });
 
 router.post('/login', function(req, res, next) {
