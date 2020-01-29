@@ -7,17 +7,20 @@ const DEVELOPMENT = !PRODUCTION && !TEST;
 const express = require('express');
 const app = express();
 const session = require('express-session');
+const cookieParser = require('cookie-parser');
 const bodyParser = require("body-parser");
 const morgan = require('morgan');
 const cors = require('cors');
+app.use(cookieParser());
 app.use(bodyParser.json());
 if (DEVELOPMENT) app.use(morgan(":date :method :url :status :res[content-length] - :response-time ms"));
 if (!PRODUCTION) app.use(cors()); // enable cross-domain requests for dev env
 
 // auth
 const passport = require('passport');
+app.set('trust proxy', 1);
 const { salt: secret } = require('./modules/helpers/hashing');
-app.use(session({ secret: secret(), resave: true, saveUninitialized: true }));
+app.use(session({ secret: secret(), resave: false, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 require('./modules/auth/strategy')(passport);

@@ -26,7 +26,7 @@ module.exports = function validateClient(client) {
         invalidFields.email = 'Please, provide a valid email';
     }
 
-    if (!client.phone && client.phone.length !== phoneMask.length) {
+    if (!client.phone || client.phone.length !== phoneMask.length) {
         invalidFields.phone = 'Phone validation error';
     } else {
         for (let i of Object.keys(phoneMask)) {
