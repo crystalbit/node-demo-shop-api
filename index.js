@@ -10,12 +10,18 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const bodyParser = require("body-parser");
 const morgan = require('morgan');
-const cors = require('cors');
 app.use(cookieParser());
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 if (DEVELOPMENT) app.use(morgan(":date :method :url :status :res[content-length] - :response-time ms"));
-if (!PRODUCTION) app.use(cors()); // enable cross-domain requests for dev env
-
+// for dev and test env do some allowances for browser policies
+if (!PRODUCTION) app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header('Access-Control-Allow-Credentials', true);
+    next();
+});
+  
 // auth
 const passport = require('passport');
 app.set('trust proxy', 1);
