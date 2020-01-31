@@ -98,8 +98,8 @@ Clients.init({
     modelName: tables.clients,
     indexes: [
         {
-            unique: 'login',
-            fields: ['login']
+            unique: 'email',
+            fields: ['email']
         }
     ]
 });
@@ -114,10 +114,10 @@ module.exports = {
     },
     sync: async function () {
         return [
-            Products.sync({ alter: true }),
-            Orders.sync({ alter: true }),
-            OrdersProducts.sync({ alter: true }),
-            Clients.sync({ alter: true }),
+            Products.sync({ alter: false }),
+            Orders.sync({ alter: false }),
+            OrdersProducts.sync({ alter: false }),
+            Clients.sync({ alter: false }),
         ];
     },
     close: async function () {
