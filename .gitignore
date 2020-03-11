@@ -6,3 +6,6 @@ node_modules/
 
 # project files
 config.js
+
+# dist
+dist/
