@@ -1,4 +1,5 @@
-const express = require('express');
+import express from 'express';
+
 const router = express.Router();
 
 const db = require('../db/main');
@@ -10,4 +11,4 @@ router.get('/list', async (req, res) => {
     res.json(goods);
 });
 
-module.exports = router;
+export default router;

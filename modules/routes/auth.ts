@@ -1,12 +1,12 @@
-const express = require('express');
-const router = express.Router();
-const passport = require('passport');
-const models = require('../db/db-models');
-const { salt, hash } = require('../helpers/hashing');
-const validateClient = require('../helpers/validateClient');
-const validatePassword = require('../helpers/validatePassword');
+import express from 'express';
+import passport from 'passport';
 
-const Clients = require('../db/clients');
+import { salt, hash } from '../helpers/hashing';
+import validateClient from '../helpers/validateClient';
+import validatePassword from '../helpers/validatePassword';
+import { add as addClient, selectOne as selectOneClient } from '../db/clients';
+
+const router = express.Router();
 
 const USER_EXISTS = 'User with this email already exists';
 const UNSUITABLE_PASSWORD = 'Select password to be 6 to 16 English/Russian symbols, digits and that stuff: @#$%^&*';
@@ -36,7 +36,7 @@ router.post('/register', async (req, res, next) => {
         })
     }
     // check user exists
-    const finder = await Clients.selectOne({ where: { email: req.body.email }});
+    const finder = await selectOneClient({ where: { email: req.body.email }});
     if (finder) {
         return res.json({
             auth: false,
@@ -47,12 +47,11 @@ router.post('/register', async (req, res, next) => {
     }
     const password_salt = salt();
     const password_hash = hash(req.body.password, password_salt);
-    const client = new models.clients({
+    const client = await addClient({
         password_hash,
         password_salt,
         ...clientData
     });
-    await client.save();
     await new Promise(rs => req.logIn(client, rs));
     res.json({ auth: true, client: clientData });
 });
@@ -102,4 +101,4 @@ router.get('/logout', function(req, res, next) {
     res.json({ auth: false });
 });
 
-module.exports = router;
+export default router;

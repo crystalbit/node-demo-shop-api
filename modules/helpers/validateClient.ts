@@ -1,13 +1,20 @@
-const phoneMask =require('./phoneMask');
+import phoneMask from './phoneMask';
 
 const emailRegexp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+interface IValidation {
+    name: string|false
+    address: string|false
+    email: string|false
+    phone: string|false
+}
 
 /**
  * @param {object} client - client data
  * @returns {object} - validation data
  */
-module.exports = function validateClient(client) {
-    const invalidFields = {
+export default function validateClient(client) {
+    const invalidFields: IValidation = {
         name: false,
         address: false,
         email: false,

@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=development node index",
-    "production": "NODE_ENV=production node index",
-    "test": "mocha test/**/*.js --recursive --exit"
+    "start": "NODE_ENV=development node dist/index",
+    "production": "NODE_ENV=production node dist/index",
+    "test": "mocha test/**/*.js --recursive --exit",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -32,6 +33,10 @@
     "sequelize": "^5.21.3"
   },
   "devDependencies": {
+    "@types/bluebird": "^3.5.29",
+    "@types/node": "^13.7.1",
+    "@types/sequelize": "^4.28.8",
+    "@types/validator": "^12.0.1",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
     "mocha": "^7.0.0",

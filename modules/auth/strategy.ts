@@ -1,7 +1,7 @@
-const { hash } = require('../helpers/hashing');
-const models = require('../db/db-models');
+import { hash } from '../helpers/hashing';
+import { Clients } from '../db/db-models';
 
-module.exports = function(passport) {
+export default function(passport) {
     const LocalStrategy = require('passport-local').Strategy;
     passport.use(new LocalStrategy(
         {
@@ -10,7 +10,7 @@ module.exports = function(passport) {
         },
         async (email, password, done) => {
             const INCORRECT = 'Incorrect email or password';
-            const finder = await models.clients.findOne({ where: { email } });
+            const finder: Clients = await Clients.findOne({ where: { email } });
 
             if (!finder) {
                 return done(null, false, { message: INCORRECT });

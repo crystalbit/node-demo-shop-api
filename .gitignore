@@ -7,5 +7,6 @@ node_modules/
 # project files
 config.js
 
-# dist
-dist/
+# ts dist
+dist/*
+!dist/.gitkeep

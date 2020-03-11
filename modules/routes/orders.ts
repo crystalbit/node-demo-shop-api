@@ -1,23 +1,23 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const validateClient = require('../helpers/validateClient');
-const passport = require('passport');
+import validateClient from '../helpers/validateClient';
 
-const db = require('../db/main');
-db.init();
-const Orders = require('../db/orders');
-const OrdersProducts = require('../db/orders_products');
-const Products = require('../db/products');
+import { init as initDB } from '../db/main';
+initDB();
+import { add as addOrder, select as selectOrder } from '../db/orders';
+import { add as addOrderProduct, select as selectOrderProduct } from '../db/orders_products';
+import { select as selectProducts } from '../db/products';
+import { IPushBody } from '../db/interfaces';
 
 // tips for user
-const BAD_REQUEST = 'Bad request';
-const BAD_FIELDS = 'Field validation failed';
-const DATABASE_ERROR = 'Database error';
-const NOT_AUTHORIZED = 'You are not logged in';
+const BAD_REQUEST: string = 'Bad request';
+const BAD_FIELDS: string = 'Field validation failed';
+const DATABASE_ERROR: string = 'Database error';
+const NOT_AUTHORIZED: string = 'You are not logged in';
 
 router.post('/push', async (req, res) => {
-    const client_id = req.isAuthenticated() ? req.user.id : 0;
-    const body = req.body;
+    const client_id: number = req.isAuthenticated() ? req.user.id : 0;
+    const body: IPushBody | undefined = req.body;
     if (!body) return res.json({ success: false, msg: BAD_REQUEST });
     const { client, options, positions } = body;
     if (!client || !options || !positions) return res.json({ success: false, msg: BAD_REQUEST });
@@ -28,7 +28,7 @@ router.post('/push', async (req, res) => {
     }
 
     try {
-        let newOrder = await Orders.add({
+        let newOrder = await addOrder({
             client_id,
             phone: client.phone,
             email: client.email,
@@ -42,7 +42,7 @@ router.post('/push', async (req, res) => {
 
         let addPositionPromises = [];
         for (const i in positions) {
-            addPositionPromises.push(await OrdersProducts.add({
+            addPositionPromises.push(await addOrderProduct({
                 order_id,
                 product_id: positions[i].id,
                 quantity: positions[i].quantity
@@ -61,7 +61,7 @@ router.get('/get', async (req, res) => {
     if (!req.isAuthenticated()) return res.json({ error: NOT_AUTHORIZED });
     const userId = req.user.id;
     if (userId == 0) return res.json({ error: BAD_REQUEST });
-    let orders = await Orders.select({ where: { client_id: userId } });
+    let orders = await selectOrder({ where: { client_id: userId } });
     let orderById = {};
     orders.forEach(it => orderById[it.id] = {
         id: it.id,
@@ -71,12 +71,12 @@ router.get('/get', async (req, res) => {
         products: []
     });
 
-    const productData = await OrdersProducts.select({ where: { order_id: Object.keys(orderById) } });
+    const productData = await selectOrderProduct({ where: { order_id: Object.keys(orderById) } });
 
     let products = new Set();
     productData.forEach(product => products.add(product.product_id));
 
-    let productInfo = await Products.select({ where: { id: Array.from(products) }});
+    let productInfo = await selectProducts({ where: { id: Array.from(products) }});
 
     let productsById = {};
     productInfo.forEach(product => productsById[product.id] = {
@@ -93,4 +93,4 @@ router.get('/get', async (req, res) => {
     res.json(Object.values(orderById));
 });
 
-module.exports = router;
+export default router;

@@ -1,1 +1,0 @@
-module.exports = password => /^[a-zA-Z0-9а-яА-Я!@#$%^&*]{6,16}$/.test(password);
